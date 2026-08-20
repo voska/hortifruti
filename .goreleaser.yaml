@@ -1,0 +1,53 @@
+version: 2
+
+builds:
+  - main: ./cmd/hortifruti
+    binary: hortifruti
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+
+archives:
+  - name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^chore:"
+      - "^ci:"
+
+brews:
+  - name: hortifruti
+    directory: Formula
+    homepage: "https://github.com/voska/hortifruti"
+    description: "Hortifruti greengrocer CLI for humans and AI agents"
+    license: "MIT"
+    repository:
+      owner: voska
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    commit_author:
+      name: voska-bot
+      email: bot@voska.dev
+    install: |
+      bin.install "hortifruti"
+    test: |
+      system "#{bin}/hortifruti", "exit-codes", "--json"
+
+scoops:
+  - name: hortifruti
+    repository:
+      owner: voska
+      name: scoop-bucket
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
