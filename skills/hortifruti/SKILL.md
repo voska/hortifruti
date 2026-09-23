@@ -34,6 +34,10 @@ hortifruti checkout --window 0 --confirm   # 5. order
 Between steps 4 and 5: **show the preview to the user and get explicit
 approval.** `--confirm` spends real money.
 
+Every result carries both `sku` and `productId`. Commands take the `sku` —
+the two are separate sequences and the same number routinely appears in
+both, naming two unrelated products.
+
 ```bash
 hortifruti cart show
 hortifruti cart update 0 --qty 3    # index from 'cart show'
